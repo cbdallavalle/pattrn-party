@@ -2,10 +2,10 @@
 // import mockData from "./__mocks__/mock-data.js";
 
 const codePens = {
-  tab1: "https://codepen.io/ivhed/pen/RpRmgd",
-  tab2: "https://codepen.io/josbert/pen/vRZWzR", 
-  tab3: "https://codepen.io/AliKlein/pen/XERJNE",
-  tab4: "https://codepen.io/z-/pen/pLwjVo"
+  tab1: "Harry Potter and the Sorcerer's Stone",
+  tab2: "Harry Potter and the Chamber of Secrets", 
+  tab3: "Harry Potter and the Prisoner of Azkaban",
+  tab4: "Harry Potter and the Goblet of Fire"
 }
 
 $(this).ready(() => {
@@ -18,7 +18,9 @@ checkWindowWidth = () => {
 }
 
 changeTabInfo = (tab) => {
-  $('a').attr('href', codePens[tab])
+  const innerText = codePens[tab];
+  console.log($('#title').text())
+  $('#title').text(innerText)
 }
 
 changeActiveButton = (target) => {
@@ -37,11 +39,11 @@ changeActiveButton = (target) => {
 
 insertTabInformation = (target) => {
   if ($(this).width() > 500) {
-    $('section').empty();
-    $('section').append( `      
+    $('.accordian section').empty();
+    $('.accordian section').append( `      
       <div class="image"></div>
       <div class="info-cont">
-        <h3>Lorem ipsum dolor sit amet, consectetue</h3>
+        <h3 id="title">Harry Potter and the Sorcerer's Stone</h3>
         <hr />
         <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
            nonummy nibh euismod tincidunt ut laoreet dolore magna
@@ -54,7 +56,7 @@ insertTabInformation = (target) => {
         </p>
       </div>`);
   } else {
-    $('.image').remove(),
+    $('.accordian .image').remove(),
     $('.info-cont').remove(),
     $(`button[name=${target.name}]`).after(`      
         <div class="image"></div>
@@ -79,4 +81,40 @@ $('nav').on('click', 'button', function (event) {
   changeActiveButton(event.target)
   changeTabInfo(event.target.name)
   insertTabInformation(event.target)
+})
+
+$('.flexible').on('click', 'section', function () {
+  $(this).hasClass('inactive') ?
+    ($(this).removeClass("inactive"),
+     $(this).addClass("active")
+    )
+  : 
+    ($(this).removeClass("active"),
+     $(this).addClass("inactive")
+    )
+})
+
+$('.header h3').on('click', (e) => {
+  if(!$('.header h3').children().length) {
+    $('.header h3').append(`
+      <div class="drop-down">    
+        <ul>
+          <li>Navigation Link 1</li>
+          <li>Navigation Link 2</li>
+          <li>Navigation Link 3</li>
+        </ul>
+        <div class="search">
+          <i class="fas fa-search search-icon"></i>
+          <input id="search-input" type="text">
+        </div>
+      </div>`
+    )
+  } else if (e.target.id === 'search-input') {
+  } else {
+    $('.header h3').children().first().remove();
+  }
+})
+
+$('.header h3').on('click', 'li', () => {
+  console.log('li')
 })
